@@ -20,6 +20,13 @@ void displayNumBlueShirts() {
 	cout << "Total number of blue shirts: " << total << endl;
 }
 
+
+// Q3
+int a[3][3][2] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18 };
+void displayAllShirtsQ3() {
+	cout << "Total number of all shirts: " << total << endl;
+}
+
 int main() {
 
 	// Q1
@@ -70,7 +77,29 @@ int main() {
 		call displayNumBlueShirts;		// call function to display
 	}
 
+	// Q3
+	_asm {
+		// calculate number of all shirts
+		mov eax, 0;						// eax = 0
+		mov i, 0;						// i = 0
+		lea esi, [a];					// esi = [a]
+	forloopQ3:
+		cmp i, 18;						// compare i & 18
+		Je doneQ3;						// if i == 18, jump to doneQ3
+		add eax, [esi];					// eax += b[][][]
+		inc i;							// i++
+		add esi, 4;						// esi += 4 for next int in array
+		Jmp forloopQ3;
+	doneQ3:
+		mov total, eax;
+		call diplayAllShirtsQ3;
+		// calculate number of all medium shirts
+		mov eax, 0;
+		mov i, 0;
+		lea esi, [a];
+		
 
+	}
 
 
 
