@@ -19,6 +19,23 @@ void displayNumMedShirts() {
 void displayNumBlueShirts() {
 	cout << "Total number of blue shirts: " << total << endl;
 }
+void displayNumShortSleeve() {
+	cout << "Total number of short sleeve shirts: " << total << endl;
+}
+void displayNumRedShirts() {
+	cout << "Total number of red shirts: " << total << endl;
+}
+
+
+// Q2
+int c[5] = { 9, 3, 22, 8, 1 };
+int x = 0, y = 0;
+void displayOGArray() {
+	cout << "Original array a: " << c[0] << ' ' << c[1] << " " << c[2] << " " << c[3] << " " << c[4] << endl;
+}
+void displayNewArray() {
+	cout << "New array a: " << c[0] << ' ' << c[1] << " " << c[2] << " " << c[3] << " " << c[4] << endl;
+}
 
 
 // Q3
@@ -77,6 +94,33 @@ int main() {
 		call displayNumBlueShirts;		// call function to display
 	}
 
+	cout << endl << endl;
+
+	// Q2
+	_asm {
+		call displayOGArray;
+		lea esi, [c];
+	outerLoop:
+		cmp x, 5;
+		Je q2done;
+		mov eax, 0;
+	innerLoop:
+		add eax, [esi];
+		add esi, 4;
+		cmp eax, [esi];
+		Jg outerLoop;
+		xchg eax, [esi];
+		inc x;
+		inc y;
+		Jmp outerLoop;
+	q2done:
+		call displayNewArray;
+	}
+
+
+	cout << endl << endl;
+
+
 	// Q3
 	_asm {
 		// calculate number of all shirts
@@ -92,13 +136,61 @@ int main() {
 		Jmp forloopQ3;
 	doneQ3:
 		mov total, eax;
-		call diplayAllShirtsQ3;
-		// calculate number of all medium shirts
+		call displayAllShirtsQ3;
+		// calculate number of medium shirts
 		mov eax, 0;
-		mov i, 0;
 		lea esi, [a];
-		
-
+		add esi, 8;						// esi + 8	|| b[0][1][0]
+		add eax, [esi];
+		add esi, 4;						// esi + 12 || b[0][1][1]
+		add eax, [esi];
+		add esi, 20;					// esi + 32 || b[1][1][0]
+		add eax, [esi];
+		add esi, 4;						// esi + 36 || b[1][1][1]
+		add eax, [esi];
+		add esi, 20;					// esi + 56 || b[2][1][0]
+		add eax, [esi];
+		add esi, 4;						// esi + 60 || b[2][1][1]
+		mov total, eax;
+		call displayNumMedShirts;
+		// calculate number of short sleeve shirts || b[][][0]
+		mov eax, 0;
+		lea esi, [a];					// esi || b[0][0][0]
+		add eax, [esi];
+		add esi, 8;						// esi + 8 || b[0][1][0]
+		add eax, [esi];
+		add esi, 8;						// esi + 16 || b[0][2][0]
+		add eax, [esi];
+		add esi, 8;						// esi + 24 || b[1][0][0]
+		add eax, [esi];
+		add esi, 8;						// esi + 32 || b[1][1][0]
+		add eax, [esi];
+		add esi, 8;						// esi + 40 || b[1][2][0]
+		add eax, [esi];
+		add esi, 8;						// esi + 48 || b[2][0][0]
+		add eax, [esi];
+		add esi, 8;						// esi + 56 || b[2][1][0]
+		add eax, [esi];
+		add esi, 8;						// esi + 64 || b[2][2][0]
+		add eax, [esi];
+		mov total, eax;
+		call displayNumShortSleeve;
+		// calculate number of red shirts || b[0][][]
+		mov eax, 0;
+		lea esi, [a];				// esi = b[0][0][0]
+		add eax, [esi];
+		add esi, 4;					// esi + 4 = b[0][0][1]
+		add eax, [esi];
+		add esi, 4;					// esi + 8 = b[0][1][0]
+		add eax, [esi];
+		add esi, 4;					// esi + 12 = b[0][1][1]
+		add eax, [esi];
+		add esi, 4;					// esi + 16 = b[0][2][0]
+		add eax, [esi];
+		add esi, 4;					// esi + 20 = b[0][2][1]
+		add eax, [esi];
+		mov total, eax;
+		call displayNumRedShirts;
 	}
 
 
