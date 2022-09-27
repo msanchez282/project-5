@@ -29,7 +29,7 @@ void displayNumRedShirts() {
 
 // Q2
 int c[5] = { 9, 3, 22, 8, 1 };
-int x = 0, y = 0;
+int x = 0, y = 0, count1 = 4, count2 = 0;
 void displayOGArray() {
 	cout << "Original array a: " << c[0] << ' ' << c[1] << " " << c[2] << " " << c[3] << " " << c[4] << endl;
 }
@@ -99,21 +99,29 @@ int main() {
 	// Q2
 	_asm {
 		call displayOGArray;
-		lea esi, [c];
+		mov edx, count1;
 	outerLoop:
-		cmp x, 5;
-		Je q2done;
-		mov eax, 0;
+		cmp edx, 0;
+		Jl doneQ2;
+		mov ecx, count1;
+		lea esi, [c];
 	innerLoop:
-		add eax, [esi];
+		cmp ecx, 0;
+		Jl repeatIt;
+		mov eax, [esi];
+		cmp eax, [esi + 4];
+		Jg swapThem;
 		add esi, 4;
-		cmp eax, [esi];
-		Jg outerLoop;
-		xchg eax, [esi];
-		inc x;
-		inc y;
+		dec ecx;
+	swapThem:
+		xchg eax, [esi + 4];
+		mov[esi], eax;
+		dec ecx;
+		Jmp innerLoop;
+	repeatIt:
+		dec edx;
 		Jmp outerLoop;
-	q2done:
+	doneQ2:
 		call displayNewArray;
 	}
 
